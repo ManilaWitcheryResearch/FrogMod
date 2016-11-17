@@ -1,6 +1,7 @@
 package com.example.examplemod;
 
 import net.minecraft.init.Blocks;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -16,5 +17,6 @@ public class ExampleMod
     {
         // some example code
         System.out.println("DIRT BLOCK >> "+Blocks.DIRT.getUnlocalizedName());
+        MinecraftForge.EVENT_BUS.register(new SimpleEventHandler());
     }
 }
