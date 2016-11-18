@@ -26,6 +26,7 @@ public class Config {
 
     String address = "";
     int port = 8123;
+    String name = "Minecraft Server";
 
     public String getAddress() {
         return address;
@@ -43,7 +44,14 @@ public class Config {
         syncConfig();
     }
 
+    public String getName() { return name; }
+    public void setName(String name) {
+        this.name = name;
+        syncConfig();
+    }
+
     public void syncConfig() {
+        name = configFile.getString("Server Name", Configuration.CATEGORY_GENERAL, name, "Name of this server");
         address = configFile.getString("Server Address", Configuration.CATEGORY_GENERAL, address, "Address notified to the Air Service");
         port = configFile.getInt("Port", Configuration.CATEGORY_GENERAL, port, 0, 65535, "Listening port");
 
