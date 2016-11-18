@@ -1,5 +1,6 @@
 package manila.frogmod.dotcommand;
 
+import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.event.ServerChatEvent;
 
 import java.util.HashMap;
@@ -38,6 +39,16 @@ public class DotCommand {
     }
 
     public static void initCommands() {
-        register("info", (args, command, player) -> {});
+        register("info", (args, command, event) -> {
+            event.getPlayer().addChatMessage(new TextComponentString(String.format(
+                    "name: %s\n" +
+                    "ip: %s\n",
+                    event.getPlayer().getDisplayNameString(),
+                    event.getPlayer().getPlayerIP()
+            )));
+        });
+        register("suicide", (args, command, event) -> {
+            event.getPlayer().setHealth(-1);
+        });
     }
 }
