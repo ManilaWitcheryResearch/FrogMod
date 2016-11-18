@@ -1,4 +1,4 @@
-package com.example.examplemod;
+package com.frogmcs.frogmod;
 
 import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.event.ServerChatEvent;
@@ -7,7 +7,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 /**
  * Created by swordfeng on 16-11-18.
  */
-public class SimpleEventHandler {
+public class FrogEventHandler {
     @SubscribeEvent
     public void onServerChat(ServerChatEvent event) {
         System.out.printf("%s says: %s\n", event.getUsername(), event.getMessage());
