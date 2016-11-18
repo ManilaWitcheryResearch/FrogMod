@@ -27,6 +27,8 @@ public class Config {
     String address = "";
     int port = 8123;
     String name = "Minecraft Server";
+    String remoteAddress = "";
+    int remotePort = 8123;
 
     public String getAddress() {
         return address;
@@ -50,10 +52,31 @@ public class Config {
         syncConfig();
     }
 
+    public String getRemoteAddress() { return remoteAddress; }
+    public void setRemoteAddress(String remoteAddress) {
+        this.remoteAddress = remoteAddress;
+        syncConfig();
+    }
+
+    public int getRemotePort() {
+        return remotePort;
+    }
+    public void setRemotePort(int remotePort) {
+        this.remotePort = remotePort;
+        syncConfig();
+    }
+
     public void syncConfig() {
-        name = configFile.getString("Server Name", Configuration.CATEGORY_GENERAL, name, "Name of this server");
-        address = configFile.getString("Server Address", Configuration.CATEGORY_GENERAL, address, "Address notified to the Air Service");
-        port = configFile.getInt("Port", Configuration.CATEGORY_GENERAL, port, 0, 65535, "Listening port");
+        name = configFile.getString("Minecraft Server Name", Configuration.CATEGORY_GENERAL,
+                name, "Name of this server");
+        address = configFile.getString("Minecraft Server Address", Configuration.CATEGORY_GENERAL,
+                address, "Address sent to the Air Service");
+        port = configFile.getInt("Minecraft Server Port", Configuration.CATEGORY_GENERAL,
+                port, 0, 65535, "Listening port");
+        remoteAddress = configFile.getString("Air Server Address", Configuration.CATEGORY_GENERAL,
+                remoteAddress, "Air Service Address");
+        remotePort = configFile.getInt("Air Server Port", Configuration.CATEGORY_GENERAL,
+                remotePort, 0, 65535, "Air Service port");
 
         if(configFile.hasChanged()) {
             configFile.save();

@@ -1,6 +1,8 @@
 package manila.frogmod.mcs.http;
 
+import manila.frogmod.Config;
 import manila.frogmod.FrogMod;
+import manila.frogmod.mcs.APIUriHandler;
 import manila.frogmod.mcs.Endpoint;
 import manila.frogmod.mcs.Message;
 import manila.frogmod.mcs.MessageHandler;
@@ -15,6 +17,8 @@ import io.netty.handler.codec.http.HttpRequestDecoder;
 import io.netty.handler.codec.http.HttpResponseEncoder;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
+import manila.frogmod.mcs.simpleHttp.SimpleHttpServer;
+import org.jdeferred.Promise;
 
 import java.util.logging.Logger;
 import java.util.logging.Level;
@@ -87,7 +91,8 @@ public class HttpEndpoint extends Endpoint {
     }
 
     @Override
-    public void send(Message message) {
+    public Promise<Message, Exception, Object> send(Message message) {
 
+        return null;
     }
 }

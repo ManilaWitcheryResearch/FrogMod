@@ -44,6 +44,8 @@ dependencies {
     //compile 'com.googlecode.efficient-java-matrix-library:ejml:0.24' // adds ejml to the dev env
 
     compile 'org.nanohttpd:nanohttpd:2.2.0'
+    compile 'com.mashape.unirest:unirest-java:1.4.9'
+    compile 'org.jdeferred:jdeferred-core:1.2.4'
 
     // the 'provided' configuration is for optional dependencies that exist at compile-time but might not at runtime.
     //provided 'com.mod-buildcraft:buildcraft:6.0.8:dev'

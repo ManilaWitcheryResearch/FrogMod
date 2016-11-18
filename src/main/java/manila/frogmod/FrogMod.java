@@ -2,6 +2,7 @@ package manila.frogmod;
 
 import manila.frogmod.mcs.API;
 import manila.frogmod.mcs.APIUriHandler;
+import manila.frogmod.mcs.simpleHttp.SimpleHttpEndpoint;
 import manila.frogmod.mcs.simpleHttp.SimpleHttpServer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.TextComponentString;
@@ -27,7 +28,8 @@ public class FrogMod {
     public static MinecraftServer mcServer;
     public static long startTime;
 
-    private SimpleHttpServer httpServer;
+    private SimpleHttpEndpoint endpoint;
+
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
@@ -42,32 +44,40 @@ public class FrogMod {
 
         MinecraftForge.EVENT_BUS.register(FrogMod.this);
 
-        httpServer = new SimpleHttpServer(config.getPort(), new APIUriHandler());
-        API.init();
     }
 
     @EventHandler
     public void serverStarting(FMLServerStartingEvent event) {
         mcServer = event.getServer();
-    }
 
+        endpoint = new SimpleHttpEndpoint(config.getPort(), config.getRemoteAddress(), config.getRemotePort(),
+                new APIUriHandler());
+        API.init(endpoint);
+    }
 
     @EventHandler
     public void serverStarted(FMLServerStartedEvent event) {
         startTime = System.currentTimeMillis();
         try {
-            httpServer.start();
+            endpoint.start();
         } catch (Exception e) {
             logger.fatal("Cannot start the HTTP server");
-            httpServer = null;
+            endpoint.stop();
+            endpoint = null;
         }
+        API.register();
+        API.enableHeartBeat();
     }
 
     @EventHandler
     public void serverStopping(FMLServerStoppingEvent event) {
-        if (httpServer != null) {
-            httpServer.stop();
-            httpServer = null;
+        API.disableHeartBeat();
+        if (API.isRegistered()) {
+            API.shutdown("Server stopped");
+        }
+        if (endpoint != null) {
+            endpoint.stop();
+            endpoint = null;
         }
     }
 
