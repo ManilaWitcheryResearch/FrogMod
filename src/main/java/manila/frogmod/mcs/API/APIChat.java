@@ -3,6 +3,8 @@ package manila.frogmod.mcs.API;
 import manila.frogmod.FrogMod;
 import manila.frogmod.mcs.APIUriHandler;
 import manila.frogmod.mcs.JsonMessage;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 
 import java.util.ArrayList;
@@ -19,7 +21,12 @@ public class APIChat extends APICommon {
             String text = request.obj.get("text").getAsString();
             JsonMessage response = new JsonMessage();
             if (displayName != null && text != null) {
-                FrogMod.mcServer.addChatMessage(new TextComponentString(String.format("[%s] %s", displayName, text)));
+                // cannot send out chat message
+                // FrogMod.mcServer.addChatMessage(new TextComponentString(String.format("[%s] %s", displayName, text)));
+                ITextComponent chatMessage = new TextComponentString(String.format("[%s] %s", displayName, text));
+                for (EntityPlayerMP player : FrogMod.mcServer.getPlayerList().getPlayerList()) {
+                    player.addChatMessage(chatMessage);
+                }
                 response.setSuccess();
             } else {
                 response.setFailure("malformed request");

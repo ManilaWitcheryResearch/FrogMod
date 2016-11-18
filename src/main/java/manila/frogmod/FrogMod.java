@@ -63,7 +63,7 @@ public class FrogMod {
         try {
             endpoint.start();
         } catch (Exception e) {
-            logger.fatal("Cannot start the HTTP server");
+            logger.fatal("Cannot start the HTTP server: " + e.getMessage());
             endpoint.stop();
             endpoint = null;
         }
@@ -74,7 +74,7 @@ public class FrogMod {
     @EventHandler
     public void serverStopping(FMLServerStoppingEvent event) {
         APIMonitor.disableHeartBeat();
-        if (APIMonitor.isRegistered()) {
+        if (APICommon.isRegistered()) {
             APIMonitor.shutdown("Server stopped");
         }
         if (endpoint != null) {

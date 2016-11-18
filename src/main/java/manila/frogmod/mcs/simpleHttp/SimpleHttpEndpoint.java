@@ -14,6 +14,8 @@ import org.jdeferred.Deferred;
 import org.jdeferred.Promise;
 import org.jdeferred.impl.DeferredObject;
 
+import java.io.IOException;
+import java.io.InterruptedIOException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
@@ -49,6 +51,11 @@ public class SimpleHttpEndpoint extends Endpoint {
     public void start() throws InterruptedException {
         assert(httpServer == null);
         httpServer = new SimpleHttpServer(mPort, mHandler);
+        try {
+            httpServer.start();
+        } catch (IOException e) {
+            throw new InterruptedException(e.getMessage());
+        }
         FrogMod.logger.info("HTTP server started");
     }
 
