@@ -1,10 +1,10 @@
 package manila.frogmod;
 
 import manila.frogmod.dotcommand.DotCommand;
-import manila.frogmod.mcs.API;
+import manila.frogmod.mcs.API.APIChat;
+import manila.frogmod.mcs.API.APIMonitor;
 import manila.frogmod.mcs.APIUriHandler;
 import manila.frogmod.mcs.simpleHttp.SimpleHttpEndpoint;
-import manila.frogmod.mcs.simpleHttp.SimpleHttpServer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.common.MinecraftForge;
@@ -15,7 +15,8 @@ import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.*;
 
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -42,7 +43,7 @@ public class FrogMod {
     public void init(FMLInitializationEvent event) {
         logger = LogManager.getFormatterLogger(MODID);
 
-        MinecraftForge.EVENT_BUS.register(FrogMod.this);
+        MinecraftForge.EVENT_BUS.register(FrogMod.this);;
 
         DotCommand.initCommands();
     }
@@ -53,7 +54,7 @@ public class FrogMod {
 
         endpoint = new SimpleHttpEndpoint(config.getPort(), config.getRemoteAddress(), config.getRemotePort(),
                 new APIUriHandler());
-        API.init(endpoint);
+        APIMonitor.init(endpoint);
     }
 
     @EventHandler
@@ -66,15 +67,15 @@ public class FrogMod {
             endpoint.stop();
             endpoint = null;
         }
-        API.register();
-        API.enableHeartBeat();
+        APIMonitor.register();
+        APIMonitor.enableHeartBeat();
     }
 
     @EventHandler
     public void serverStopping(FMLServerStoppingEvent event) {
-        API.disableHeartBeat();
-        if (API.isRegistered()) {
-            API.shutdown("Server stopped");
+        APIMonitor.disableHeartBeat();
+        if (APIMonitor.isRegistered()) {
+            APIMonitor.shutdown("Server stopped");
         }
         if (endpoint != null) {
             endpoint.stop();
@@ -88,6 +89,17 @@ public class FrogMod {
         event.getPlayer().addChatMessage(new TextComponentString("echo: " + event.getMessage()));
 
         if (DotCommand.handle(event)) return;
+
+        APIChat.chatMessage(event.getUsername(), event.getMessage());
+    }
+
+    @SubscribeEvent
+    public void onPlayer(PlayerEvent event) {
+        if (event instanceof PlayerEvent.PlayerLoggedInEvent) {
+            APIChat.loginMessage(event.player.getDisplayNameString(), true);
+        } else if (event instanceof PlayerEvent.PlayerLoggedOutEvent) {
+            APIChat.loginMessage(event.player.getDisplayNameString(), false);
+        }
     }
 
     @SubscribeEvent

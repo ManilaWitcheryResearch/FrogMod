@@ -46,7 +46,7 @@ public class SimpleHttpServer extends NanoHTTPD {
         JsonMessage response = (JsonMessage) mHandler.onMessage(request);
         if (response == null) {
             return newFixedLengthResponse(Response.Status.NOT_FOUND, "application/json",
-                    new JsonMessage().setFailure("API not found").encode());
+                    new JsonMessage().setFailure("APIMonitor not found").encode());
         }
         assert(response.obj.has("result"));
         return newFixedLengthResponse(Response.Status.OK, "application/json", response.encode());

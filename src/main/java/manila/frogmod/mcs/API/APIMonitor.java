@@ -1,8 +1,10 @@
-package manila.frogmod.mcs;
+package manila.frogmod.mcs.API;
 
 import com.google.gson.JsonObject;
 import manila.frogmod.Config;
 import manila.frogmod.FrogMod;
+import manila.frogmod.mcs.APIUriHandler;
+import manila.frogmod.mcs.JsonMessage;
 import manila.frogmod.mcs.simpleHttp.SimpleHttpEndpoint;
 
 import java.util.Timer;
@@ -11,10 +13,14 @@ import java.util.TimerTask;
 /**
  * Created by swordfeng on 16-11-18.
  */
-public class API {
+public class APIMonitor {
     static private Config config = null;
-    static private SimpleHttpEndpoint endpoint = null;
-    static {
+    static public SimpleHttpEndpoint endpoint = null;
+
+    static public void init(SimpleHttpEndpoint endpoint) {
+        config = Config.getInstance();
+        APIMonitor.endpoint = endpoint;
+        /* also make static code to run */
         APIUriHandler.register("/api/status", (JsonMessage request) -> {
             JsonMessage response = new JsonMessage();
             response.obj.addProperty("name", config.getName());
@@ -32,11 +38,8 @@ public class API {
             response.setSuccess();
             return response;
         });
-    }
-    static public void init(SimpleHttpEndpoint endpoint) {
-        config = Config.getInstance();
-        API.endpoint = endpoint;
-        /* also make static code to run */
+
+        APIChat.init();
     }
 
     private static String id;
