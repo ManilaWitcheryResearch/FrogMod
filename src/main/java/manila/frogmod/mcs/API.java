@@ -18,7 +18,7 @@ public class API {
             response.obj.addProperty("mod_port", config.getPort());
             response.obj.addProperty("mod_version", FrogMod.VERSION);
             response.obj.addProperty("onlines", FrogMod.mcServer.getCurrentPlayerCount());
-            response.obj.addProperty("running_time", System.currentTimeMillis() - FrogMod.startTime);
+            response.obj.addProperty("running_time", (System.currentTimeMillis() - FrogMod.startTime) / 1000.0);
             response.setSuccess();
             return response;
         });

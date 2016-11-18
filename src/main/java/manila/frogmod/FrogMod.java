@@ -13,6 +13,7 @@ import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.*;
 
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -57,13 +58,17 @@ public class FrogMod {
         try {
             httpServer.start();
         } catch (Exception e) {
-            logger.error("Cannot start the HTTP server");
+            logger.fatal("Cannot start the HTTP server");
+            httpServer = null;
         }
     }
 
     @EventHandler
     public void serverStopping(FMLServerStoppingEvent event) {
-        httpServer.stop();
+        if (httpServer != null) {
+            httpServer.stop();
+            httpServer = null;
+        }
     }
 
     @SubscribeEvent
