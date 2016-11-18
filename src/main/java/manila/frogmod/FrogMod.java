@@ -1,5 +1,6 @@
 package manila.frogmod;
 
+import manila.frogmod.dotcommand.DotCommand;
 import manila.frogmod.mcs.API;
 import manila.frogmod.mcs.APIUriHandler;
 import manila.frogmod.mcs.simpleHttp.SimpleHttpEndpoint;
@@ -85,6 +86,8 @@ public class FrogMod {
     public void onServerChat(ServerChatEvent event) {
         FrogMod.logger.info("%s says: %s\n", event.getUsername(), event.getMessage());
         event.getPlayer().addChatMessage(new TextComponentString("echo: " + event.getMessage()));
+
+        if (DotCommand.handle(event)) return;
     }
 
     @SubscribeEvent
