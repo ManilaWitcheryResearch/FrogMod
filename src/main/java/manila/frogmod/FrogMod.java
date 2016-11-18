@@ -96,8 +96,10 @@ public class FrogMod {
     @SubscribeEvent
     public void onPlayer(PlayerEvent event) {
         if (event instanceof PlayerEvent.PlayerLoggedInEvent) {
+            FrogMod.logger.info("%s logged in", event.player.getDisplayNameString());
             APIChat.loginMessage(event.player.getDisplayNameString(), true);
         } else if (event instanceof PlayerEvent.PlayerLoggedOutEvent) {
+            FrogMod.logger.info("%s logged out", event.player.getDisplayNameString());
             APIChat.loginMessage(event.player.getDisplayNameString(), false);
         }
     }

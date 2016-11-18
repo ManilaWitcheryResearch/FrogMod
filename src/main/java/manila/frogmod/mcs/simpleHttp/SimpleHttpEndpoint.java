@@ -64,7 +64,7 @@ public class SimpleHttpEndpoint extends Endpoint {
         JsonMessage jmsg = (JsonMessage) message;
         assert(jmsg.uri != null);
 
-        Deferred<JsonMessage, Exception, Object> deferred = new DeferredObject();
+        Deferred<JsonMessage, Exception, Object> deferred = new DeferredObject<>();
 
         Unirest.post(uriPrefix + jmsg.uri)
                 .header("accept", "application/json")
