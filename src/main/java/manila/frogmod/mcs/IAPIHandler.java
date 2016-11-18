@@ -1,8 +1,10 @@
 package manila.frogmod.mcs;
 
+import java.util.Optional;
+
 /**
  * Created by swordfeng on 16-11-18.
  */
 public interface IAPIHandler {
-    JsonMessage onMessage(JsonMessage msg);
+    Optional<JsonMessage> onMessage(JsonMessage msg);
 }

@@ -7,6 +7,8 @@ import manila.frogmod.mcs.JsonMessage;
 import manila.frogmod.mcs.MessageHandler;
 import fi.iki.elonen.NanoHTTPD;
 
+import java.util.Optional;
+
 /**
  * Created by swordfeng on 16-11-18.
  */
@@ -43,12 +45,12 @@ public class SimpleHttpServer extends NanoHTTPD {
 
         FrogMod.logger.info("request: " + session.getUri());
 
-        JsonMessage response = (JsonMessage) mHandler.onMessage(request);
-        if (response == null) {
+        Optional<JsonMessage> response = (Optional<JsonMessage>) mHandler.onMessage(request);
+        if (!response.isPresent()) {
             return newFixedLengthResponse(Response.Status.NOT_FOUND, "application/json",
                     new JsonMessage().setFailure("APIMonitor not found").encode());
         }
-        assert(response.obj.has("result"));
-        return newFixedLengthResponse(Response.Status.OK, "application/json", response.encode());
+        assert(response.get().obj.has("result"));
+        return newFixedLengthResponse(Response.Status.OK, "application/json", response.get().encode());
     }
 }

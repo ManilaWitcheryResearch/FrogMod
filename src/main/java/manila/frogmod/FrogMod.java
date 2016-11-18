@@ -2,6 +2,7 @@ package manila.frogmod;
 
 import manila.frogmod.dotcommand.DotCommand;
 import manila.frogmod.mcs.API.APIChat;
+import manila.frogmod.mcs.API.APICommon;
 import manila.frogmod.mcs.API.APIMonitor;
 import manila.frogmod.mcs.APIUriHandler;
 import manila.frogmod.mcs.simpleHttp.SimpleHttpEndpoint;
@@ -16,7 +17,6 @@ import net.minecraftforge.fml.common.event.*;
 
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -54,7 +54,7 @@ public class FrogMod {
 
         endpoint = new SimpleHttpEndpoint(config.getPort(), config.getRemoteAddress(), config.getRemotePort(),
                 new APIUriHandler());
-        APIMonitor.init(endpoint);
+        APICommon.init(endpoint);
     }
 
     @EventHandler

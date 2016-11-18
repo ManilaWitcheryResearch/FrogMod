@@ -7,6 +7,7 @@ import manila.frogmod.mcs.APIUriHandler;
 import manila.frogmod.mcs.JsonMessage;
 import manila.frogmod.mcs.simpleHttp.SimpleHttpEndpoint;
 
+import java.util.Optional;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -14,7 +15,7 @@ import java.util.TimerTask;
  * Created by swordfeng on 16-11-18.
  */
 public class APIMonitor extends APICommon {
-    static public void init() {
+    static protected void init() {
         APIUriHandler.register("/api/status", (JsonMessage request) -> {
             JsonMessage response = new JsonMessage();
             response.obj.addProperty("name", config.getName());
@@ -25,12 +26,12 @@ public class APIMonitor extends APICommon {
             response.obj.addProperty("onlines", FrogMod.mcServer.getCurrentPlayerCount());
             response.obj.addProperty("running_time", System.currentTimeMillis() - FrogMod.startTime);
             response.setSuccess();
-            return response;
+            return Optional.of(response);
         });
         APIUriHandler.register("/api/heartbeat", (JsonMessage request) -> {
             JsonMessage response = new JsonMessage();
             response.setSuccess();
-            return response;
+            return Optional.of(response);
         });
     }
 

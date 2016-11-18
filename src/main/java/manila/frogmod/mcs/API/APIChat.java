@@ -7,12 +7,13 @@ import net.minecraft.util.text.TextComponentString;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Optional;
 
 /**
  * Created by swordfeng on 16-11-18.
  */
 public class APIChat extends APICommon {
-    public static void init() {
+    static protected void init() {
         APIUriHandler.register("/api/chatmsg", (JsonMessage request) -> {
             String displayName = request.obj.get("displayname").getAsString();
             String text = request.obj.get("text").getAsString();
@@ -23,7 +24,7 @@ public class APIChat extends APICommon {
             } else {
                 response.setFailure("malformed request");
             }
-            return response;
+            return Optional.of(response);
         });
     }
 

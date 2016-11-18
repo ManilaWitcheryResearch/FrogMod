@@ -1,5 +1,7 @@
 package manila.frogmod.mcs;
 
+import java.util.Optional;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,10 +26,10 @@ public class APIUriHandler extends MessageHandler {
     }
 
     @Override
-    public Message onMessage(Message message) {
+    public Optional<JsonMessage> onMessage(Message message) {
         JsonMessage jmsg = (JsonMessage) message;
         IAPIHandler handler = handlers.get(jmsg.uri);
-        if (handler == null) return null;
+        if (handler == null) return Optional.empty();
         return handler.onMessage(jmsg);
     }
 }
