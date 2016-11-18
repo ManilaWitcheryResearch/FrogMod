@@ -31,7 +31,6 @@ public class FrogMod {
 
     private SimpleHttpEndpoint endpoint;
 
-
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         Config.init(event.getSuggestedConfigurationFile());
@@ -45,6 +44,7 @@ public class FrogMod {
 
         MinecraftForge.EVENT_BUS.register(FrogMod.this);
 
+        DotCommand.initCommands();
     }
 
     @EventHandler
