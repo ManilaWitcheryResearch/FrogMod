@@ -1,4 +1,4 @@
-package com.frogmcs.frogmod.mcs;
+package manila.frogmod.mcs;
 
 /**
  * Created by swordfeng on 16-11-18.

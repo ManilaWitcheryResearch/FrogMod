@@ -1,4 +1,4 @@
-package com.frogmcs.frogmod;
+package manila.frogmod;
 
 import net.minecraftforge.common.config.Configuration;
 

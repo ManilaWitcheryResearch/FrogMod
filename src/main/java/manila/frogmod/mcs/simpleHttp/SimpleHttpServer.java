@@ -1,15 +1,10 @@
-package com.frogmcs.frogmod.mcs.simpleHttp;
+package manila.frogmod.mcs.simpleHttp;
 
 
-import com.frogmcs.frogmod.FrogMod;
-import com.frogmcs.frogmod.mcs.JsonMessage;
-import com.frogmcs.frogmod.mcs.MessageHandler;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import manila.frogmod.FrogMod;
+import manila.frogmod.mcs.JsonMessage;
+import manila.frogmod.mcs.MessageHandler;
 import fi.iki.elonen.NanoHTTPD;
-
-import java.io.IOException;
 
 /**
  * Created by swordfeng on 16-11-18.

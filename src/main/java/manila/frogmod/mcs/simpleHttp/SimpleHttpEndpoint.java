@@ -1,11 +1,9 @@
-package com.frogmcs.frogmod.mcs.simpleHttp;
+package manila.frogmod.mcs.simpleHttp;
 
-import com.frogmcs.frogmod.FrogMod;
-import com.frogmcs.frogmod.mcs.Endpoint;
-import com.frogmcs.frogmod.mcs.Message;
-import com.frogmcs.frogmod.mcs.MessageHandler;
-
-import java.util.logging.Logger;
+import manila.frogmod.FrogMod;
+import manila.frogmod.mcs.Endpoint;
+import manila.frogmod.mcs.Message;
+import manila.frogmod.mcs.MessageHandler;
 
 /**
  * Created by swordfeng on 16-11-18.

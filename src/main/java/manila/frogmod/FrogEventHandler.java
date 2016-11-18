@@ -1,4 +1,4 @@
-package com.frogmcs.frogmod;
+package manila.frogmod;
 
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.TextComponentString;

@@ -1,13 +1,9 @@
-package com.frogmcs.frogmod;
+package manila.frogmod;
 
-import com.frogmcs.frogmod.mcs.API;
-import com.frogmcs.frogmod.mcs.APIUriHandler;
-import com.frogmcs.frogmod.mcs.MessageHandler;
-import com.frogmcs.frogmod.mcs.simpleHttp.SimpleHttpServer;
+import manila.frogmod.mcs.API;
+import manila.frogmod.mcs.APIUriHandler;
+import manila.frogmod.mcs.simpleHttp.SimpleHttpServer;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -17,9 +13,8 @@ import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.Level;
 
-@Mod(modid = FrogMod.MODID, version = FrogMod.VERSION, guiFactory = "com.frogmcs.frogmod.FrogModGuiFactory")
+@Mod(modid = FrogMod.MODID, version = FrogMod.VERSION, guiFactory = "manila.frogmod.FrogModGuiFactory")
 public class FrogMod {
     public static final String MODID = "FrogMod";
     public static final String VERSION = "0.9";

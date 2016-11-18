@@ -1,4 +1,4 @@
-package com.frogmcs.frogmod.mcs;
+package manila.frogmod.mcs;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;

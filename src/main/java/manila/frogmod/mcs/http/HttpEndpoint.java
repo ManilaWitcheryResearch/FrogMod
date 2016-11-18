@@ -1,9 +1,9 @@
-package com.frogmcs.frogmod.mcs.http;
+package manila.frogmod.mcs.http;
 
-import com.frogmcs.frogmod.FrogMod;
-import com.frogmcs.frogmod.mcs.Endpoint;
-import com.frogmcs.frogmod.mcs.Message;
-import com.frogmcs.frogmod.mcs.MessageHandler;
+import manila.frogmod.FrogMod;
+import manila.frogmod.mcs.Endpoint;
+import manila.frogmod.mcs.Message;
+import manila.frogmod.mcs.MessageHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;

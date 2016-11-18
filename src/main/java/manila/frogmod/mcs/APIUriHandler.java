@@ -1,4 +1,4 @@
-package com.frogmcs.frogmod.mcs;
+package manila.frogmod.mcs;
 
 import java.util.HashMap;
 import java.util.Map;

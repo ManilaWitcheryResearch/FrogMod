@@ -12,7 +12,7 @@ apply plugin: 'net.minecraftforge.gradle.forge'
 
 
 version = "1.0"
-group= "com.frogmcs.frogmod" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+group= "manila.frogmod" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "frogmod"
 
 sourceCompatibility = targetCompatibility = "1.6" // Need this here so eclipse task generates correctly.

@@ -1,4 +1,4 @@
-package com.frogmcs.frogmod;
+package manila.frogmod;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;

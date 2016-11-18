@@ -1,6 +1,6 @@
-package com.frogmcs.frogmod.mcs.http;
+package manila.frogmod.mcs.http;
 
-import com.frogmcs.frogmod.mcs.MessageHandler;
+import manila.frogmod.mcs.MessageHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
