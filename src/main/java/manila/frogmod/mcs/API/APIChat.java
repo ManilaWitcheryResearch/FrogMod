@@ -11,8 +11,8 @@ import java.util.HashSet;
 /**
  * Created by swordfeng on 16-11-18.
  */
-public class APIChat {
-    static {
+public class APIChat extends APICommon {
+    public static void init() {
         APIUriHandler.register("/api/chatmsg", (JsonMessage request) -> {
             String displayName = request.obj.get("displayname").getAsString();
             String text = request.obj.get("text").getAsString();
@@ -26,7 +26,6 @@ public class APIChat {
             return response;
         });
     }
-    public static void init() {}
 
     private static ArrayList<JsonMessage> pending = new ArrayList<>();
     private static synchronized void scheduleResend(JsonMessage request) {
@@ -38,7 +37,7 @@ public class APIChat {
         request.uri = "/api/mcs/chatmsg";
         request.obj.addProperty("playername", playerName);
         request.obj.addProperty("text", text);
-        APIMonitor.endpoint.send(request).fail((e) -> {
+        sendWithId(request).fail((e) -> {
             FrogMod.logger.warn("failed to send chat message: " + e.getMessage());
             FrogMod.logger.warn("will retry");
             scheduleResend(request);
@@ -54,7 +53,7 @@ public class APIChat {
         request.uri = "/api/mcs/loginmsg";
         request.obj.addProperty("playername", playerName);
         request.obj.addProperty("action", online ? "login" : "logout");
-        APIMonitor.endpoint.send(request).fail((e) -> {
+        sendWithId(request).fail((e) -> {
             FrogMod.logger.warn("failed to send login message: " + e.getMessage());
             FrogMod.logger.warn("will retry");
             scheduleResend(request);

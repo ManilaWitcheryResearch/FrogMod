@@ -13,14 +13,8 @@ import java.util.TimerTask;
 /**
  * Created by swordfeng on 16-11-18.
  */
-public class APIMonitor {
-    static private Config config = null;
-    static public SimpleHttpEndpoint endpoint = null;
-
-    static public void init(SimpleHttpEndpoint endpoint) {
-        config = Config.getInstance();
-        APIMonitor.endpoint = endpoint;
-        /* also make static code to run */
+public class APIMonitor extends APICommon {
+    static public void init() {
         APIUriHandler.register("/api/status", (JsonMessage request) -> {
             JsonMessage response = new JsonMessage();
             response.obj.addProperty("name", config.getName());
@@ -38,11 +32,7 @@ public class APIMonitor {
             response.setSuccess();
             return response;
         });
-
-        APIChat.init();
     }
-
-    private static String id;
 
     static public void register() {
         JsonMessage request = new JsonMessage();
@@ -52,7 +42,7 @@ public class APIMonitor {
         request.obj.addProperty("mod_port", config.getPort());
         request.obj.addProperty("mod_version", FrogMod.VERSION);
         request.uri = "/api/mcs/register";
-        endpoint.send(request).done((JsonMessage jmsg) -> {
+        send(request).done((JsonMessage jmsg) -> {
             JsonObject obj = jmsg.obj;
             String result = obj.get("result").getAsString();
             if (!"success".equals(result)) {
@@ -66,9 +56,6 @@ public class APIMonitor {
     }
 
     static public void update() {
-        if (id == null) {
-            throw new RuntimeException("Server is not registered");
-        }
         JsonMessage request = new JsonMessage();
         request.obj.addProperty("name", config.getName());
         request.obj.addProperty("address", config.getAddress());
@@ -77,19 +64,16 @@ public class APIMonitor {
         request.obj.addProperty("mod_version", FrogMod.VERSION);
         request.obj.addProperty("serverid", id);
         request.uri = "/api/mcs/update";
-        endpoint.send(request).fail((Exception e) -> {
+        sendWithId(request).fail((Exception e) -> {
             FrogMod.logger.error("Failed to update: " + e.getMessage());
         });
     }
 
     static public void golive() {
-        if (id == null) {
-            throw new RuntimeException("Server is not registered");
-        }
         JsonMessage request = new JsonMessage();
         request.obj.addProperty("serverid", id);
         request.uri = "/api/mcs/golive";
-        endpoint.send(request).done((JsonMessage jmsg) -> {
+        sendWithId(request).done((JsonMessage jmsg) -> {
             if (!"success".equals(jmsg.obj.get("result").getAsString())) {
                 FrogMod.logger.error("Failed to golive: (server report) " + jmsg.obj.get("errormsg").getAsString());
             }
@@ -99,13 +83,10 @@ public class APIMonitor {
     }
 
     static public void heartbeat() {
-        if (id == null) {
-            throw new RuntimeException("Server is not registered");
-        }
         JsonMessage request = new JsonMessage();
         request.obj.addProperty("serverid", id);
         request.uri = "/api/mcs/heartbeat";
-        endpoint.send(request).done((JsonMessage jmsg) -> {
+        sendWithId(request).done((JsonMessage jmsg) -> {
             if (!"success".equals(jmsg.obj.get("result").getAsString())) {
                 FrogMod.logger.error("Failed to heartbeat: (server report) " + jmsg.obj.get("errormsg").getAsString());
             }
@@ -115,20 +96,13 @@ public class APIMonitor {
     }
 
     static public void shutdown(String reason) {
-        if (id == null) {
-            throw new RuntimeException("Server is not registered");
-        }
         JsonMessage request = new JsonMessage();
         request.obj.addProperty("name", config.getName());
         request.obj.addProperty("serverid", id);
         request.obj.addProperty("reason", reason);
         request.uri = "/api/server_closedown";
-        endpoint.send(request);
+        sendWithId(request);
         id = null;
-    }
-
-    static public boolean isRegistered() {
-        return id != null;
     }
 
     private static Timer heartbeatTimer = new Timer();
