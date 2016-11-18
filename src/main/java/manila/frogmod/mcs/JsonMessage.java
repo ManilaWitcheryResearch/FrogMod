@@ -17,8 +17,24 @@ public class JsonMessage extends Message {
     public String uri = null;
     public JsonObject obj;
 
+    public JsonMessage() {
+        this.obj = new JsonObject();
+    }
+
     public JsonMessage(JsonObject obj) {
         this.obj = obj;
+    }
+
+    public JsonMessage setSuccess() {
+        obj.addProperty("result", "success");
+        obj.addProperty("errormsg", "");
+        return this;
+    }
+
+    public JsonMessage setFailure(String reason) {
+        obj.addProperty("result", "failed");
+        obj.addProperty("errormsg", reason);
+        return this;
     }
 
     public static JsonMessage decode(String buf) throws JsonParseException {

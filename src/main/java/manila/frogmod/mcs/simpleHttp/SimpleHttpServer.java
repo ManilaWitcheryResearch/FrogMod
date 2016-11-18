@@ -1,6 +1,7 @@
 package manila.frogmod.mcs.simpleHttp;
 
 
+import com.google.gson.JsonObject;
 import manila.frogmod.FrogMod;
 import manila.frogmod.mcs.JsonMessage;
 import manila.frogmod.mcs.MessageHandler;
@@ -22,7 +23,8 @@ public class SimpleHttpServer extends NanoHTTPD {
     public Response serve(IHTTPSession session) {
         Method method = session.getMethod();
         if (!Method.POST.equals(method)) {
-            return newFixedLengthResponse(Response.Status.BAD_REQUEST, "text/plain", "Only POST requests are accepted.");
+            return newFixedLengthResponse(Response.Status.BAD_REQUEST, "application/json",
+                    new JsonMessage().setFailure("Bad request").encode());
         }
 
         JsonMessage request;
@@ -34,7 +36,8 @@ public class SimpleHttpServer extends NanoHTTPD {
             String body = new String(buffer, "UTF-8");
             request = JsonMessage.decode(body);
         } catch (Exception e) {
-            return newFixedLengthResponse(Response.Status.BAD_REQUEST, "text/plain", "Bad request.");
+            return newFixedLengthResponse(Response.Status.BAD_REQUEST, "application/json",
+                    new JsonMessage().setFailure("Bad request").encode());
         }
         request.uri = session.getUri();
 
@@ -42,7 +45,8 @@ public class SimpleHttpServer extends NanoHTTPD {
 
         JsonMessage response = (JsonMessage) mHandler.onMessage(request);
         if (response == null) {
-            return newFixedLengthResponse(Response.Status.NOT_FOUND, "text/plain", "API not found");
+            return newFixedLengthResponse(Response.Status.NOT_FOUND, "application/json",
+                    new JsonMessage().setFailure("API not found").encode());
         }
         return newFixedLengthResponse(Response.Status.OK, "application/json", response.encode());
     }
