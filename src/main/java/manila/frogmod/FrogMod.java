@@ -18,9 +18,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -32,7 +30,7 @@ public class FrogMod {
     public static final String MODID = "FrogMod";
     public static final String VERSION = "0.9";
 
-    public static Logger logger;
+    public static Logger logger = LogManager.getFormatterLogger(MODID);
     public static Config config;
     public static MinecraftServer mcServer;
     public static long startTime;
@@ -44,15 +42,11 @@ public class FrogMod {
         Config.init(event.getSuggestedConfigurationFile());
         config = Config.getInstance();
         config.syncConfig();
-        LoggerFactory.getLogger("test");
     }
 
     @EventHandler
     public void init(FMLInitializationEvent event) throws ClassNotFoundException, MalformedURLException {
-        logger = LogManager.getFormatterLogger(MODID);
-
-        MinecraftForge.EVENT_BUS.register(FrogMod.this);;
-
+        MinecraftForge.EVENT_BUS.register(FrogMod.this);
         DotCommand.initCommands();
     }
 
@@ -119,16 +113,10 @@ public class FrogMod {
         String classpath = FrogMod.class.getProtectionDomain().getCodeSource().getLocation().getPath();
         String jarpath = classpath.substring(0, classpath.indexOf('!'));
         try {
-            Method method = URLClassLoader.class.getDeclaredMethod("addURL", new Class[] { URL.class });
+            Method method = URLClassLoader.class.getDeclaredMethod("addURL", URL.class);
             method.setAccessible(true);
-            method.invoke(ClassLoader.getSystemClassLoader(), new Object[] { new URL(jarpath) });
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (MalformedURLException e) {
+            method.invoke(ClassLoader.getSystemClassLoader(), new URL(jarpath));
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
