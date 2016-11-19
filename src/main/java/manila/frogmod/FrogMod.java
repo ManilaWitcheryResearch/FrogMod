@@ -94,9 +94,6 @@ public class FrogMod {
 
     @SubscribeEvent
     public void onServerChat(ServerChatEvent event) {
-        FrogMod.logger.info("%s says: %s\n", event.getUsername(), event.getMessage());
-        event.getPlayer().addChatMessage(new TextComponentString("echo: " + event.getMessage()));
-
         if (DotCommand.handle(event)) return;
 
         APIChat.chatMessage(event.getUsername(), event.getMessage());
