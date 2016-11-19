@@ -48,7 +48,7 @@ public class APIMonitor extends APICommon {
             if (!"success".equals(obj.get("result").getAsString())) {
                 FrogMod.logger.error("Failed to register to server: (server report) " + obj.get("errormsg").getAsString());
             } else {
-                id = obj.get("serverid").getAsString();
+                id = obj.get("text").getAsString();
             }
         }).fail((Exception e) -> {
             FrogMod.logger.error("Failed to register to server: " + e.getMessage());

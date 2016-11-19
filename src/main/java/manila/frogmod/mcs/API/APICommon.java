@@ -1,5 +1,6 @@
 package manila.frogmod.mcs.API;
 
+import com.google.gson.JsonElement;
 import manila.frogmod.Config;
 import manila.frogmod.mcs.JsonMessage;
 import manila.frogmod.mcs.simpleHttp.SimpleHttpEndpoint;
@@ -51,4 +52,11 @@ public class APICommon {
     static public boolean isRegistered() {
         return id != null;
     }
+
+    /* convenient functions for interacting with gson */
+    protected String JsonGetString(JsonElement e) {
+        if (e == null) return null;
+        return e.getAsString();
+    }
+
 }

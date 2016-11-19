@@ -43,7 +43,7 @@ public class SimpleHttpServer extends NanoHTTPD {
         }
         request.uri = session.getUri();
 
-        FrogMod.logger.info("request: " + session.getUri());
+        FrogMod.logger.info(String.format("<inreq %s> %s", request.uri, request.encode()));
 
         Optional<JsonMessage> response = (Optional<JsonMessage>) mHandler.onMessage(request);
         if (!response.isPresent()) {
@@ -51,6 +51,9 @@ public class SimpleHttpServer extends NanoHTTPD {
                     new JsonMessage().setFailure("APIMonitor not found").encode());
         }
         assert(response.get().obj.has("result"));
+
+        FrogMod.logger.info(String.format("<outres> %s", response.get().encode()));
+
         return newFixedLengthResponse(Response.Status.OK, "application/json", response.get().encode());
     }
 }

@@ -92,10 +92,14 @@ public class SimpleHttpEndpoint extends Endpoint {
                             deferred.reject(new InterruptedException("cancelled"));
                         }
                     });
+            FrogMod.logger.info(String.format("<outreq %s> %s", jmsg.uri, jmsg.encode()));
         } catch (Exception e) {
             deferred.reject(e);
         }
 
-        return deferred.promise();
+        return deferred.promise().then((JsonMessage jres) -> {
+            FrogMod.logger.info("<inres> " + jmsg.encode());
+            return jres;
+        });
     }
 }
