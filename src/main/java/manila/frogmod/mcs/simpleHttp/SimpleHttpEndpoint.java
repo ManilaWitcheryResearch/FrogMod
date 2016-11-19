@@ -34,7 +34,6 @@ public class SimpleHttpEndpoint extends Endpoint {
 
     private SimpleHttpServer httpServer;
 
-
     public SimpleHttpEndpoint(int port, String remoteAddr, int remotePort, MessageHandler handler) {
         super(handler);
         mPort = port;
@@ -73,26 +72,30 @@ public class SimpleHttpEndpoint extends Endpoint {
 
         Deferred<JsonMessage, Exception, Object> deferred = new DeferredObject<>();
 
-        Unirest.post(uriPrefix + jmsg.uri)
-                .header("accept", "application/json")
-                .body(jmsg.encode())
-                .asStringAsync(new Callback<String>() {
-                    @Override
-                    public void completed(HttpResponse<String> httpResponse) {
-                        deferred.resolve(JsonMessage.decode(httpResponse.getBody()));
-                    }
+        try {
+            Unirest.post(uriPrefix + jmsg.uri)
+                    .header("accept", "application/json")
+                    .body(jmsg.encode())
+                    .asStringAsync(new Callback<String>() {
+                        @Override
+                        public void completed(HttpResponse<String> httpResponse) {
+                            deferred.resolve(JsonMessage.decode(httpResponse.getBody()));
+                        }
 
-                    @Override
-                    public void failed(UnirestException e) {
-                        deferred.reject(e);
-                    }
+                        @Override
+                        public void failed(UnirestException e) {
+                            deferred.reject(e);
+                        }
 
-                    @Override
-                    public void cancelled() {
-                        deferred.reject(new InterruptedException("cancelled"));
-                    }
-                });
-
+                        @Override
+                        public void cancelled() {
+                            deferred.reject(new InterruptedException("cancelled"));
+                        }
+                    });
+        } catch (Exception e) {
+            deferred.reject(e);
+        }
+        
         return deferred.promise();
     }
 }
