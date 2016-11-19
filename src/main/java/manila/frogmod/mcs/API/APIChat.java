@@ -17,8 +17,8 @@ import java.util.Optional;
 public class APIChat extends APICommon {
     static protected void init() {
         APIUriHandler.register("/api/chatmsg", (JsonMessage request) -> {
-            String displayName = request.obj.get("displayname").getAsString();
-            String text = request.obj.get("text").getAsString();
+            String displayName = JsonGetString(request.obj.get("displayname"));
+            String text = JsonGetString(request.obj.get("text"));
             JsonMessage response = new JsonMessage();
             if (displayName != null && text != null) {
                 // cannot send out chat message
@@ -50,8 +50,8 @@ public class APIChat extends APICommon {
             FrogMod.logger.warn("will retry");
             scheduleResend(request);
         }).done((jmsg) -> {
-            if (!"success".equals(jmsg.obj.get("result").getAsString())) {
-                FrogMod.logger.warn("failed to send chat message: (server report) " + jmsg.obj.get("errormsg").getAsString());
+            if (!"success".equals(JsonGetString(jmsg.obj.get("result")))) {
+                FrogMod.logger.warn("failed to send chat message: (server report) " + JsonGetString(jmsg.obj.get("errormsg")));
             }
         });
     }
@@ -66,8 +66,8 @@ public class APIChat extends APICommon {
             FrogMod.logger.warn("will retry");
             scheduleResend(request);
         }).done((jmsg) -> {
-            if (!"success".equals(jmsg.obj.get("result").getAsString())) {
-                FrogMod.logger.warn("failed to send login message: (server report) " + jmsg.obj.get("errormsg").getAsString());
+            if (!"success".equals(JsonGetString(jmsg.obj.get("result")))) {
+                FrogMod.logger.warn("failed to send login message: (server report) " + JsonGetString(jmsg.obj.get("errormsg")));
             }
         });
     }

@@ -54,7 +54,7 @@ public class APICommon {
     }
 
     /* convenient functions for interacting with gson */
-    protected String JsonGetString(JsonElement e) {
+    protected static String JsonGetString(JsonElement e) {
         if (e == null) return null;
         return e.getAsString();
     }

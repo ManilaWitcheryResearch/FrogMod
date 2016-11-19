@@ -45,10 +45,10 @@ public class APIMonitor extends APICommon {
         request.uri = "/api/mcs/register";
         send(request).done((JsonMessage jmsg) -> {
             JsonObject obj = jmsg.obj;
-            if (!"success".equals(obj.get("result").getAsString())) {
-                FrogMod.logger.error("Failed to register to server: (server report) " + obj.get("errormsg").getAsString());
+            if (!"success".equals(JsonGetString(obj.get("result")))) {
+                FrogMod.logger.error("Failed to register to server: (server report) " + JsonGetString(obj.get("errormsg")));
             } else {
-                id = obj.get("text").getAsString();
+                id = JsonGetString(obj.get("text"));
             }
         }).fail((Exception e) -> {
             FrogMod.logger.error("Failed to register to server: " + e.getMessage());
@@ -74,8 +74,8 @@ public class APIMonitor extends APICommon {
         request.obj.addProperty("serverid", id);
         request.uri = "/api/mcs/golive";
         sendWithId(request).done((JsonMessage jmsg) -> {
-            if (!"success".equals(jmsg.obj.get("result").getAsString())) {
-                FrogMod.logger.error("Failed to golive: (server report) " + jmsg.obj.get("errormsg").getAsString());
+            if (!"success".equals(JsonGetString(jmsg.obj.get("result")))) {
+                FrogMod.logger.error("Failed to golive: (server report) " + JsonGetString(jmsg.obj.get("errormsg")));
             }
         }).fail((Exception e) -> {
             FrogMod.logger.error("Failed to golive: " + e.getMessage());
@@ -87,8 +87,8 @@ public class APIMonitor extends APICommon {
         request.obj.addProperty("serverid", id);
         request.uri = "/api/mcs/heartbeat";
         sendWithId(request).done((JsonMessage jmsg) -> {
-            if (!"success".equals(jmsg.obj.get("result").getAsString())) {
-                FrogMod.logger.error("Failed to heartbeat: (server report) " + jmsg.obj.get("errormsg").getAsString());
+            if (!"success".equals(JsonGetString(jmsg.obj.get("result")))) {
+                FrogMod.logger.error("Failed to heartbeat: (server report) " + JsonGetString(jmsg.obj.get("errormsg")));
             }
         }).fail((Exception e) -> {
             FrogMod.logger.error("Failed to heartbeat: " + e.getMessage());
