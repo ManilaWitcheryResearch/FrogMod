@@ -95,7 +95,7 @@ public class SimpleHttpEndpoint extends Endpoint {
         } catch (Exception e) {
             deferred.reject(e);
         }
-        
+
         return deferred.promise();
     }
 }
