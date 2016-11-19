@@ -67,15 +67,15 @@ public class SimpleHttpEndpoint extends Endpoint {
 
     @Override
     public Promise<JsonMessage, Exception, Void> send(Message message) {
-        JsonMessage jmsg = (JsonMessage) message;
-        assert(jmsg.uri != null);
+        JsonMessage request = (JsonMessage) message;
+        assert(request.uri != null);
 
         Deferred<JsonMessage, Exception, Void> deferred = new DeferredObject<>();
 
         try {
-            Unirest.post(uriPrefix + jmsg.uri)
+            Unirest.post(uriPrefix + request.uri)
                     .header("accept", "application/json")
-                    .body(jmsg.encode())
+                    .body(request.encode())
                     .asStringAsync(new Callback<String>() {
                         @Override
                         public void completed(HttpResponse<String> httpResponse) {
@@ -92,14 +92,14 @@ public class SimpleHttpEndpoint extends Endpoint {
                             deferred.reject(new InterruptedException("cancelled"));
                         }
                     });
-            FrogMod.logger.info(String.format("<outreq %s> %s", jmsg.uri, jmsg.encode()));
+            FrogMod.logger.info(String.format("<outreq %s> %s", request.uri, request.encode()));
         } catch (Exception e) {
             deferred.reject(e);
         }
 
-        return deferred.promise().then((JsonMessage jres) -> {
-            FrogMod.logger.info("<inres> " + jmsg.encode());
-            return jres;
+        return deferred.promise().then((JsonMessage response) -> {
+            FrogMod.logger.info("<inres> " + response.encode());
+            return response;
         });
     }
 }
