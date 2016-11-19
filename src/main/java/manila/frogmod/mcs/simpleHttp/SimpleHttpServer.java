@@ -1,7 +1,6 @@
 package manila.frogmod.mcs.simpleHttp;
 
 
-import com.google.gson.JsonObject;
 import manila.frogmod.FrogMod;
 import manila.frogmod.mcs.JsonMessage;
 import manila.frogmod.mcs.MessageHandler;

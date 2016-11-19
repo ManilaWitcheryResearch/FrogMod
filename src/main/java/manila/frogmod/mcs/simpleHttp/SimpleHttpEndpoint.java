@@ -4,7 +4,6 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.async.Callback;
 import com.mashape.unirest.http.exceptions.UnirestException;
-import manila.frogmod.Config;
 import manila.frogmod.FrogMod;
 import manila.frogmod.mcs.Endpoint;
 import manila.frogmod.mcs.JsonMessage;
@@ -15,11 +14,6 @@ import org.jdeferred.Promise;
 import org.jdeferred.impl.DeferredObject;
 
 import java.io.IOException;
-import java.io.InterruptedIOException;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 /**
  * Created by swordfeng on 16-11-18.

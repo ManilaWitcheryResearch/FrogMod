@@ -1,11 +1,9 @@
 package manila.frogmod.mcs.API;
 
 import com.google.gson.JsonObject;
-import manila.frogmod.Config;
 import manila.frogmod.FrogMod;
 import manila.frogmod.mcs.APIUriHandler;
 import manila.frogmod.mcs.JsonMessage;
-import manila.frogmod.mcs.simpleHttp.SimpleHttpEndpoint;
 
 import java.util.Optional;
 import java.util.Timer;

@@ -4,11 +4,9 @@ import com.google.gson.JsonElement;
 import manila.frogmod.Config;
 import manila.frogmod.mcs.JsonMessage;
 import manila.frogmod.mcs.simpleHttp.SimpleHttpEndpoint;
-import org.jdeferred.Deferred;
 import org.jdeferred.DonePipe;
 import org.jdeferred.Promise;
 import org.jdeferred.impl.DeferredObject;
-import org.omg.CORBA.OBJ_ADAPTER;
 
 /**
  * Created by swordfeng on 16-11-19.
