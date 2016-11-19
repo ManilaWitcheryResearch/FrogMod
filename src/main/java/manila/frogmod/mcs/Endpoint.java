@@ -12,7 +12,7 @@ public abstract class Endpoint {
     public abstract void start() throws InterruptedException;
     public abstract void stop();
 
-    public abstract Promise<? extends Message, Exception, Object> send(Message message);
+    public abstract Promise<? extends Message, Exception, Void> send(Message message);
 
     protected Endpoint(MessageHandler handler) {
         messageHandler = handler;

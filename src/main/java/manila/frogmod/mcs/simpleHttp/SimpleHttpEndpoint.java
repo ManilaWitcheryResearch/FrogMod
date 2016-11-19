@@ -66,11 +66,11 @@ public class SimpleHttpEndpoint extends Endpoint {
     }
 
     @Override
-    public Promise<JsonMessage, Exception, Object> send(Message message) {
+    public Promise<JsonMessage, Exception, Void> send(Message message) {
         JsonMessage jmsg = (JsonMessage) message;
         assert(jmsg.uri != null);
 
-        Deferred<JsonMessage, Exception, Object> deferred = new DeferredObject<>();
+        Deferred<JsonMessage, Exception, Void> deferred = new DeferredObject<>();
 
         try {
             Unirest.post(uriPrefix + jmsg.uri)

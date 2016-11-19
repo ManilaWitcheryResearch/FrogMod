@@ -45,11 +45,10 @@ public class APIMonitor extends APICommon {
         request.uri = "/api/mcs/register";
         send(request).done((JsonMessage jmsg) -> {
             JsonObject obj = jmsg.obj;
-            String result = obj.get("result").getAsString();
-            if (!"success".equals(result)) {
+            if (!"success".equals(obj.get("result").getAsString())) {
                 FrogMod.logger.error("Failed to register to server: (server report) " + obj.get("errormsg").getAsString());
             } else {
-                id = obj.get("text").getAsString();
+                id = obj.get("serverid").getAsString();
             }
         }).fail((Exception e) -> {
             FrogMod.logger.error("Failed to register to server: " + e.getMessage());

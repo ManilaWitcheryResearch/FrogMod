@@ -4,6 +4,7 @@ import manila.frogmod.Config;
 import manila.frogmod.mcs.JsonMessage;
 import manila.frogmod.mcs.simpleHttp.SimpleHttpEndpoint;
 import org.jdeferred.Deferred;
+import org.jdeferred.DonePipe;
 import org.jdeferred.Promise;
 import org.jdeferred.impl.DeferredObject;
 import org.omg.CORBA.OBJ_ADAPTER;
@@ -24,13 +25,24 @@ public class APICommon {
         APIChat.init();
     }
 
-    static protected Promise<JsonMessage, Exception, Object> send(JsonMessage request) {
-        return endpoint.send(request);
+    static protected Promise<JsonMessage, Exception, Void> send(JsonMessage request) {
+        return endpoint.send(request).then(new DonePipe<JsonMessage, JsonMessage, Exception, Void>() {
+            @Override
+            public Promise<JsonMessage, Exception, Void> pipeDone(JsonMessage jmsg) {
+                if (jmsg.obj.get("result") == null ||
+                        jmsg.obj.get("errormsg") == null) {
+                    return new DeferredObject<JsonMessage, Exception, Void>()
+                            .reject(new Exception("server response malformed")).promise();
+                }
+                return new DeferredObject<JsonMessage, Exception, Void>().resolve(jmsg).promise();
+            }
+        });
     }
 
-    static protected Promise<JsonMessage, Exception, Object> sendWithId(JsonMessage request) {
+    static protected Promise<JsonMessage, Exception, Void> sendWithId(JsonMessage request) {
         if (id == null) {
-            return new DeferredObject().reject(new RuntimeException("Server is not registered")).promise();
+            return new DeferredObject<JsonMessage, Exception, Void>()
+                    .reject(new RuntimeException("Server is not registered")).promise();
         }
         request.obj.addProperty("serverid", id);
         return endpoint.send(request);
