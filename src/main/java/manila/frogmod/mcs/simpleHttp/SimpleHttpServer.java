@@ -45,7 +45,16 @@ public class SimpleHttpServer extends NanoHTTPD {
 
         FrogMod.logger.info(String.format("<inreq %s> %s", request.uri, request.encode()));
 
-        Optional<JsonMessage> response = (Optional<JsonMessage>) mHandler.onMessage(request);
+        Optional<JsonMessage> response;
+        try {
+            response = (Optional<JsonMessage>) mHandler.onMessage(request);
+        } catch (Exception e) {
+            FrogMod.logger.error("Error handling request: " + e.getMessage());
+            e.printStackTrace();
+            return newFixedLengthResponse(Response.Status.INTERNAL_ERROR, "application/json",
+                    new JsonMessage().setFailure("internal error").encode());
+        }
+
         if (!response.isPresent()) {
             return newFixedLengthResponse(Response.Status.NOT_FOUND, "application/json",
                     new JsonMessage().setFailure("APIMonitor not found").encode());
