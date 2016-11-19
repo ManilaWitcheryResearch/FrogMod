@@ -6,6 +6,7 @@ import manila.frogmod.mcs.API.APICommon;
 import manila.frogmod.mcs.API.APIMonitor;
 import manila.frogmod.mcs.APIUriHandler;
 import manila.frogmod.mcs.simpleHttp.SimpleHttpEndpoint;
+import net.minecraft.launchwrapper.LaunchClassLoader;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.common.MinecraftForge;
@@ -19,6 +20,18 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.selector.ClassLoaderContextSelector;
+import org.slf4j.LoggerFactory;
+
+import java.io.File;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.HashMap;
+import java.util.HashSet;
 
 @Mod(modid = FrogMod.MODID, version = FrogMod.VERSION, guiFactory = "manila.frogmod.FrogModGuiFactory")
 public class FrogMod {
@@ -40,12 +53,14 @@ public class FrogMod {
     }
 
     @EventHandler
-    public void init(FMLInitializationEvent event) {
+    public void init(FMLInitializationEvent event) throws ClassNotFoundException, MalformedURLException {
         logger = LogManager.getFormatterLogger(MODID);
 
         MinecraftForge.EVENT_BUS.register(FrogMod.this);;
 
         DotCommand.initCommands();
+
+        LoggerFactory.getLogger("test");
     }
 
     @EventHandler
@@ -109,4 +124,30 @@ public class FrogMod {
         Config.getInstance().syncConfig();
     }
 
+    private static URLClassLoader loader;
+
+    static {
+        String classpath = FrogMod.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+        String jarpath = classpath.substring(0, classpath.indexOf('!'));
+        try {
+            Method method = URLClassLoader.class.getDeclaredMethod("addURL", new Class[] { URL.class });
+            method.setAccessible(true);
+            method.invoke(ClassLoader.getSystemClassLoader(), new Object[] { new URL(jarpath) });
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            loader = new URLClassLoader(new URL[] { new URL(jarpath) });
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+    }
 }
