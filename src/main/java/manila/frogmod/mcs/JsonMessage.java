@@ -1,14 +1,13 @@
 package manila.frogmod.mcs;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
 
 /**
  * Created by swordfeng on 16-11-18.
  */
 public class JsonMessage extends Message {
+    private static Gson gson = new Gson();
+
     @Override
     public String encode() {
         return obj.toString();
@@ -23,6 +22,14 @@ public class JsonMessage extends Message {
 
     public JsonMessage(JsonObject obj) {
         this.obj = obj;
+    }
+
+    public JsonMessage(Object obj, Class type) {
+        this.obj = (JsonObject) gson.toJsonTree(obj, type);
+    }
+
+    public <T> T get(Class<T> type) {
+        return gson.fromJson(this.obj, type);
     }
 
     public JsonMessage setSuccess() {

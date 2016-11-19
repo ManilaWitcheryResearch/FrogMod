@@ -95,7 +95,7 @@ public class APIMonitor extends APICommon {
         });
     }
 
-    static public void shutdown(String reason) {
+    static public void closedown(String reason) {
         JsonMessage request = new JsonMessage();
         request.obj.addProperty("name", config.getName());
         request.obj.addProperty("serverid", id);

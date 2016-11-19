@@ -1,5 +1,6 @@
 package manila.frogmod.mcs.API;
 
+import com.google.gson.Gson;
 import manila.frogmod.FrogMod;
 import manila.frogmod.mcs.APIUriHandler;
 import manila.frogmod.mcs.JsonMessage;

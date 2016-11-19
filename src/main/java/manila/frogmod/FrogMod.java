@@ -7,7 +7,6 @@ import manila.frogmod.mcs.API.APIMonitor;
 import manila.frogmod.mcs.APIUriHandler;
 import manila.frogmod.mcs.simpleHttp.SimpleHttpEndpoint;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
@@ -84,7 +83,7 @@ public class FrogMod {
     public void serverStopping(FMLServerStoppingEvent event) {
         APIMonitor.disableHeartBeat();
         if (APICommon.isRegistered()) {
-            APIMonitor.shutdown("Server stopped");
+            APIMonitor.closedown("Server stopped");
         }
         if (endpoint != null) {
             endpoint.stop();
