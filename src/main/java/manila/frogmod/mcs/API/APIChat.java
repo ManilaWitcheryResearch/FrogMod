@@ -70,10 +70,9 @@ public class APIChat extends APICommon {
 
     public static void achieveMessage(String playerName, String achievement) {
         JsonMessage request = new JsonMessage();
-        /* ARCHIEVE is typo */
-        request.uri = "/api/mcs/archievemsg";
+        request.uri = "/api/mcs/achievemsg";
         request.obj.addProperty("playername", playerName);
-        request.obj.addProperty("archieve", achievement);
+        request.obj.addProperty("achieve", achievement);
         handleResult(sendWithId(request), request, "achieve");
     }
 
