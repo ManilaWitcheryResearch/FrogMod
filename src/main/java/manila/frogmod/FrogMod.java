@@ -6,9 +6,12 @@ import manila.frogmod.mcs.API.APICommon;
 import manila.frogmod.mcs.API.APIMonitor;
 import manila.frogmod.mcs.APIUriHandler;
 import manila.frogmod.mcs.simpleHttp.SimpleHttpEndpoint;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.ServerChatEvent;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.player.AchievementEvent;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -98,7 +101,7 @@ public class FrogMod {
     public void onServerChat(ServerChatEvent event) {
         if (DotCommand.handle(event)) return;
 
-        logger.info(String.format("<%s> %s", event.getUsername(), event.getMessage()));
+        logger.info("<%s> %s", event.getUsername(), event.getMessage());
         APIChat.chatMessage(event.getUsername(), event.getMessage());
     }
 
@@ -119,6 +122,22 @@ public class FrogMod {
         Config.getInstance().syncConfig();
     }
 
+    @SubscribeEvent
+    public void onPlayerAchievement(AchievementEvent event) {
+        logger.info("%s's new achievement: %s", event.getEntityPlayer().getDisplayNameString(),
+                event.getAchievement().getDescription());
+        APIChat.achieveMessage(event.getEntityPlayer().getDisplayNameString(),
+                event.getAchievement().getDescription());
+    }
+
+    @SubscribeEvent
+    public void onLivingDeath(LivingDeathEvent event) {
+        if (event.getEntityLiving() instanceof EntityPlayer) {
+            EntityPlayer player = (EntityPlayer) event.getEntityLiving();
+            logger.info("%s died: %s", player.getDisplayNameString(), event.getSource().getDamageType());
+            APIChat.deathMessage(player.getDisplayNameString(), event.getSource().getDamageType());
+        }
+    }
 
     static {
         String classpath = FrogMod.class.getProtectionDomain().getCodeSource().getLocation().getPath();
