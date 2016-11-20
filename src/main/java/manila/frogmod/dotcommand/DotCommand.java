@@ -1,5 +1,6 @@
 package manila.frogmod.dotcommand;
 
+import manila.frogmod.mcs.API.APIMonitor;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.event.ServerChatEvent;
 
@@ -49,6 +50,9 @@ public class DotCommand {
         });
         register("suicide", (args, command, event) -> {
             event.getPlayer().setHealth(-1);
+        });
+        register("register", (args, command, event) -> {
+            APIMonitor.register();
         });
     }
 }
