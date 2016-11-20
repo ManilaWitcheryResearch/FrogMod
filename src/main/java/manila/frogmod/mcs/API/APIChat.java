@@ -6,6 +6,7 @@ import manila.frogmod.mcs.JsonMessage;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
+import org.jdeferred.Promise;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -39,20 +40,24 @@ public class APIChat extends APICommon {
         // we won't resend currently
     }
 
+    private static void handleResult(Promise<JsonMessage, Exception, Void> result, JsonMessage request, String messageType) {
+        result.fail((e) -> {
+            FrogMod.logger.warn("failed to send %s message: %s (will retry)", messageType, e.getMessage());
+            scheduleResend(request);
+        }).done((jmsg) -> {
+            if (!"success".equals(JsonGetString(jmsg.obj.get("result")))) {
+                FrogMod.logger.warn("failed to send %s message: (server report) ", messageType,
+                        JsonGetString(jmsg.obj.get("errormsg")));
+            }
+        });
+    }
+
     public static void chatMessage(String playerName, String text) {
         JsonMessage request = new JsonMessage();
         request.uri = "/api/mcs/chatmsg";
         request.obj.addProperty("playername", playerName);
         request.obj.addProperty("text", text);
-        sendWithId(request).fail((e) -> {
-            FrogMod.logger.warn("failed to send chat message: " + e.getMessage());
-            FrogMod.logger.warn("will retry");
-            scheduleResend(request);
-        }).done((jmsg) -> {
-            if (!"success".equals(JsonGetString(jmsg.obj.get("result")))) {
-                FrogMod.logger.warn("failed to send chat message: (server report) " + JsonGetString(jmsg.obj.get("errormsg")));
-            }
-        });
+        handleResult(sendWithId(request), request, "chat");
     }
 
     public static void loginMessage(String playerName, boolean online) {
@@ -60,14 +65,23 @@ public class APIChat extends APICommon {
         request.uri = "/api/mcs/loginmsg";
         request.obj.addProperty("playername", playerName);
         request.obj.addProperty("action", online ? "login" : "logout");
-        sendWithId(request).fail((e) -> {
-            FrogMod.logger.warn("failed to send login message: " + e.getMessage());
-            FrogMod.logger.warn("will retry");
-            scheduleResend(request);
-        }).done((jmsg) -> {
-            if (!"success".equals(JsonGetString(jmsg.obj.get("result")))) {
-                FrogMod.logger.warn("failed to send login message: (server report) " + JsonGetString(jmsg.obj.get("errormsg")));
-            }
-        });
+        handleResult(sendWithId(request), request, "login");
+    }
+
+    public static void achieveMessage(String playerName, String achievement) {
+        JsonMessage request = new JsonMessage();
+        /* ARCHIEVE is typo */
+        request.uri = "/api/mcs/archievemsg";
+        request.obj.addProperty("playername", playerName);
+        request.obj.addProperty("archieve", achievement);
+        handleResult(sendWithId(request), request, "achieve");
+    }
+
+    public static void deathMessage(String playerName, String action) {
+        JsonMessage request = new JsonMessage();
+        request.uri = "/api/mcs/deathmsg";
+        request.obj.addProperty("playername", playerName);
+        request.obj.addProperty("action", action);
+        handleResult(sendWithId(request), request, "death");
     }
 }
