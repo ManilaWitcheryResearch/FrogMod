@@ -39,6 +39,7 @@ public class FrogMod {
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
+        logger.info("load config");
         Config.init(event.getSuggestedConfigurationFile());
         config = Config.getInstance();
         config.syncConfig();
@@ -46,21 +47,26 @@ public class FrogMod {
 
     @EventHandler
     public void init(FMLInitializationEvent event) throws ClassNotFoundException, MalformedURLException {
+        logger.info("init event bus");
         MinecraftForge.EVENT_BUS.register(FrogMod.this);
+        logger.info("init dot commands");
         DotCommand.initCommands();
     }
 
     @EventHandler
     public void serverStarting(FMLServerStartingEvent event) {
+        logger.info("create http endpoint");
         mcServer = event.getServer();
 
         endpoint = new SimpleHttpEndpoint(config.getPort(), config.getRemoteAddress(), config.getRemotePort(),
                 new APIUriHandler());
+        logger.info("api init");
         APICommon.init(endpoint);
     }
 
     @EventHandler
     public void serverStarted(FMLServerStartedEvent event) {
+        logger.info("start http endpoing");
         startTime = System.currentTimeMillis();
         try {
             endpoint.start();
@@ -69,17 +75,20 @@ public class FrogMod {
             endpoint.stop();
             endpoint = null;
         }
+        logger.info("register to air service");
         APIMonitor.register();
         APIMonitor.enableHeartBeat();
     }
 
     @EventHandler
     public void serverStopping(FMLServerStoppingEvent event) {
+        logger.info("server closedown");
         APIMonitor.disableHeartBeat();
         if (APICommon.isRegistered()) {
             APIMonitor.closedown("Server stopped");
         }
         if (endpoint != null) {
+            logger.info("destroy http endpoint");
             endpoint.stop();
             endpoint = null;
         }
@@ -89,6 +98,7 @@ public class FrogMod {
     public void onServerChat(ServerChatEvent event) {
         if (DotCommand.handle(event)) return;
 
+        logger.info(String.format("<%s> %s", event.getUsername(), event.getMessage()));
         APIChat.chatMessage(event.getUsername(), event.getMessage());
     }
 
@@ -105,6 +115,7 @@ public class FrogMod {
 
     @SubscribeEvent
     public void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event) {
+        logger.info("sync config");
         Config.getInstance().syncConfig();
     }
 
