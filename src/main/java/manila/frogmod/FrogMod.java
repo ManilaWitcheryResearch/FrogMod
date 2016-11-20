@@ -31,7 +31,7 @@ import java.net.URLClassLoader;
         serverSideOnly = true, acceptableRemoteVersions = "*")
 public class FrogMod {
     public static final String MODID = "FrogMod";
-    public static final String VERSION = "0.9";
+    public static final String VERSION = "0.10";
 
     public static Logger logger = LogManager.getFormatterLogger(MODID);
     public static Config config;
