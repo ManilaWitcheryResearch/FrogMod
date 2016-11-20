@@ -3,6 +3,7 @@ package manila.frogmod.mcs.simpleHttp;
 
 import manila.frogmod.FrogMod;
 import manila.frogmod.mcs.JsonMessage;
+import manila.frogmod.mcs.Message;
 import manila.frogmod.mcs.MessageHandler;
 import fi.iki.elonen.NanoHTTPD;
 
@@ -42,11 +43,11 @@ public class SimpleHttpServer extends NanoHTTPD {
         }
         request.uri = session.getUri();
 
-        FrogMod.logger.info(String.format("<inreq %s> %s", request.uri, request.encode()));
+        FrogMod.logger.info("<inreq %s> %s", request.uri, request.encode());
 
         Optional<JsonMessage> response;
         try {
-            response = (Optional<JsonMessage>) mHandler.onMessage(request);
+            response = mHandler.onMessage(request).map((Message msg) -> (JsonMessage) msg);
         } catch (Exception e) {
             FrogMod.logger.error("Error handling request: " + e.getMessage());
             e.printStackTrace();
@@ -60,7 +61,7 @@ public class SimpleHttpServer extends NanoHTTPD {
         }
         assert(response.get().obj.has("result"));
 
-        FrogMod.logger.info(String.format("<outres> %s", response.get().encode()));
+        FrogMod.logger.info("<outres> %s", response.get().encode());
 
         return newFixedLengthResponse(Response.Status.OK, "application/json", response.get().encode());
     }
