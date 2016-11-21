@@ -1,11 +1,13 @@
 package manila.frogmod.dotcommand;
 
 import manila.frogmod.mcs.API.APIMonitor;
+import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.event.ServerChatEvent;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Created by swordfeng on 16-11-18.
@@ -39,6 +41,8 @@ public class DotCommand {
         return true;
     }
 
+    static private Optional<TileEntityChest> chest = Optional.empty();
+
     public static void initCommands() {
         register("info", (args, command, event) -> {
             event.getPlayer().addChatMessage(new TextComponentString(String.format(
@@ -53,6 +57,13 @@ public class DotCommand {
         });
         register("register", (args, command, event) -> {
             APIMonitor.register();
+        });
+
+        register("showgui", (args, command, event) -> {
+            synchronized (chest) {
+                if (chest.isPresent() == false) chest = Optional.of(new TileEntityChest());
+            }
+            event.getPlayer().displayGui(chest.get());
         });
     }
 }
