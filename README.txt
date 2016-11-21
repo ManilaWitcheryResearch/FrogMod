@@ -1,3 +1,17 @@
+======================
+Frog MCS Minecraft Mod
+======================
+
+How to setup a workspace:
+1. run ./gradlew setupDecompWorkspace
+2. Import Gradle project in IDEA Intellij
+3. run ./gradlew genIntellijRuns
+4. for building, run ./gradlew build, get jat at build/libs/frogmod-${version}.jar
+5. for running local environment, run ./gradlew runClient
+
+
+Orignal README.txt Below:
+
 -------------------------------------------
 Source installation information for modders
 -------------------------------------------
