@@ -80,6 +80,7 @@ public class APIMonitor extends APICommon {
         });
     }
 
+    static private int heartbeatFailure = 0;
     static public void heartbeat() {
         JsonMessage request = new JsonMessage();
         request.obj.addProperty("serverid", id);
@@ -88,8 +89,11 @@ public class APIMonitor extends APICommon {
             if (!"success".equals(JsonGetString(jmsg.obj.get("result")))) {
                 FrogMod.logger.error("Failed to heartbeat: (server report) " + JsonGetString(jmsg.obj.get("errormsg")));
             }
+            heartbeatFailure = 0;
         }).fail((Exception e) -> {
             FrogMod.logger.error("Failed to heartbeat: " + e.getMessage());
+            heartbeatFailure++;
+            if (heartbeatFailure >= 10) id = null;
         });
     }
 
