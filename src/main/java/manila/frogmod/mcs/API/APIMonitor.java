@@ -93,7 +93,10 @@ public class APIMonitor extends APICommon {
         }).fail((Exception e) -> {
             FrogMod.logger.error("Failed to heartbeat: " + e.getMessage());
             heartbeatFailure++;
-            if (heartbeatFailure >= 10) id = null;
+            if (heartbeatFailure >= 10) {
+                id = null;
+                heartbeatFailure = 0;
+            }
         });
     }
 
