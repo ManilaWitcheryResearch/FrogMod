@@ -6,8 +6,11 @@ How to setup a workspace:
 1. run ./gradlew setupDecompWorkspace
 2. Import Gradle project in IDEA Intellij
 3. run ./gradlew genIntellijRuns
-4. for building, run ./gradlew build, get jat at build/libs/frogmod-${version}.jar
-5. for running local environment, run ./gradlew runClient
+4. for packaging, run ./gradlew build, get jat at build/libs/frogmod-${version}.jar
+5. for running test environment from command line, run ./gradlew runClient|runServer
+6. for running from Intellij, goto Run -> Edit Configurations...,
+   select profiles in the left window, and set Use classpath of module field to FrogMod_main
+   Then just run the profiles
 
 
 Orignal README.txt Below:
