@@ -141,13 +141,16 @@ public class FrogMod {
 
     static {
         String classpath = FrogMod.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-        String jarpath = classpath.substring(0, classpath.indexOf('!'));
-        try {
-            Method method = URLClassLoader.class.getDeclaredMethod("addURL", URL.class);
-            method.setAccessible(true);
-            method.invoke(ClassLoader.getSystemClassLoader(), new URL(jarpath));
-        } catch (Exception e) {
-            e.printStackTrace();
+        int bangPos = classpath.indexOf('!');
+        if (bangPos != -1) {
+            String jarpath = classpath.substring(0, bangPos);
+            try {
+                Method method = URLClassLoader.class.getDeclaredMethod("addURL", URL.class);
+                method.setAccessible(true);
+                method.invoke(ClassLoader.getSystemClassLoader(), new URL(jarpath));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 }
