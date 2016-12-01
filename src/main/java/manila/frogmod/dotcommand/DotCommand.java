@@ -45,7 +45,7 @@ public class DotCommand {
 
     public static void initCommands() {
         register("info", (args, command, event) -> {
-            event.getPlayer().addChatMessage(new TextComponentString(String.format(
+            event.getPlayer().sendMessage(new TextComponentString(String.format(
                     "name: %s\n" +
                     "ip: %s\n",
                     event.getPlayer().getDisplayNameString(),

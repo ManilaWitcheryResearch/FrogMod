@@ -24,8 +24,8 @@ public class APIChat extends APICommon {
                 // cannot send out chat message
                 // FrogMod.mcServer.addChatMessage(new TextComponentString(String.format("[%s] %s", displayName, text)));
                 ITextComponent chatMessage = new TextComponentString(String.format("[%s] %s", displayName, text));
-                for (EntityPlayerMP player : FrogMod.mcServer.getPlayerList().getPlayerList()) {
-                    player.addChatMessage(chatMessage);
+                for (EntityPlayerMP player : FrogMod.mcServer.getPlayerList().getPlayers()) {
+                    player.sendMessage(chatMessage);
                 }
                 response.setSuccess();
             } else {
